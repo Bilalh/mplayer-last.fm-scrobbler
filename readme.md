@@ -4,7 +4,7 @@ mplayer last.fm scrobbler with support for mp3, m4a (mp4), flac and ogg
 
 Prerequisites
 -------------
-* Get and setup lastfmsubmitd  http://www.red-bean.com/~decklin/software/lastfmsubmitd/
+* Get lastfmsubmitd  http://www.red-bean.com/~decklin/software/lastfmsubmitd/  (only lastfmsubmit is needed)
 * Get taginfo http://freshmeat.net/projects/taginfo
 * mplayer
 
