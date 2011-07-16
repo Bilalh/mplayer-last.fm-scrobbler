@@ -4,10 +4,10 @@
 # Bilal Hussain
 #
 # Prerequisites:
-#	* Get and setup lastfmsubmitd  http://www.red-bean.com/~decklin/software/lastfmsubmitd/
-#   * Get taginfo http://freshmeat.net/projects/taginfo
+#	* Get and setup lastfmsubmitd http://www.red-bean.com/~decklin/software/lastfmsubmitd/
+#   * Install taglib http://developer.kde.org/~wheeler/taglib.html
+#   * Get taginfo in this repo (https://github.com/Bilalh/mplayer-last.fm-scrobbler/blob/master/taginfo.cpp)
 #   * mplayer
-#
 # Install this script in your $PATH e.g '/usr/local/bin/m' for easy use
 #
 # Known problems:
