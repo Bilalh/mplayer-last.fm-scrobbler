@@ -10,6 +10,8 @@
 #   * mplayer
 # Install this script in your $PATH e.g '/usr/local/bin/m' for easy use
 #
+#  Press  Ctrl-\ to quit
+#
 # Known problems:
 #	* 'q' interrupts only playback of current file; press and *hold* ctrl-C
 #	* even if you skip file immediately with Enter or 'q', it gets scrobbled - see below
@@ -17,6 +19,7 @@
 # Song info will be submitted after you finish listening to the song;
 # if you are SKIPPING a track and don't want it to appear, press Ctrl-C
 # in mplayer - it will skip to the next track without scrobbling.
+#
 
 #Set defaults
 player=${LASTFM_PLAYER:=mplayer}
@@ -34,7 +37,7 @@ function scrobble () {
 	$scrobbler -e utf8 -l "$time" -a "$artist" -b "$album" --title "$title"
 }
 
-trap "exit" INT HUP PIPE KILL QUIT TERM EXIT
+trap "exit"  HUP PIPE KILL QUIT TERM EXIT
 for f; do
 	$player "$f" || continue
 
