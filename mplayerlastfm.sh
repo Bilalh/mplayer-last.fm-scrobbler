@@ -21,6 +21,8 @@
 # in mplayer - it will skip to the next track without scrobbling.
 #
 
+kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/null || lastfmsubmitd
+
 #Set defaults
 player=${LASTFM_PLAYER:=mplayer}
 taginfo=${TAGINFO:=taginfo}
@@ -37,6 +39,7 @@ function scrobble () {
 	$scrobbler -e utf8 -l "$time" -a "$artist" -b "$album" --title "$title"
 }
 
+# Allows quiting 
 trap "exit"  HUP PIPE KILL QUIT TERM EXIT
 for f; do
 	$player "$f" || continue
