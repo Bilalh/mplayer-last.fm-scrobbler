@@ -30,18 +30,17 @@ function scrobble () {
 	read time;	
 	
 	[ "$album" = "1" ] && album=""
-	echo "### $scrobbler -e utf8 -l \"`printf '%d:%d' $(($time%3600/60)) $(($time%60))`\" -a \"$artist\" -b \"$album\" --title \"$title\""
-	$scrobbler -e utf8 -l "`printf '%d:%d' $(($time%3600/60)) $(($time%60))`" -a "$artist" -b "$album" --title "$title"
+	echo "### $scrobbler -e utf8 -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
+	$scrobbler -e utf8 -l "$time" -a "$artist" -b "$album" --title "$title"
 }
 
+trap "exit" INT HUP PIPE KILL QUIT TERM EXIT
 for f; do
 	$player "$f" || continue
 
 	case "$f" in
 	*.mp3 | *.m4a | *.flac | *.ogg )
-		$taginfo "$f"                          \
-		|  egrep 'ALBUM|LENGTH|ARTIST|TITLE'   \
-		|  cut -d \" -f 2                      \
+		$taginfo -short "$f" \
 		|  scrobble
 		;;
 	esac
