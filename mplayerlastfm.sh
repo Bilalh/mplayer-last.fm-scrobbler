@@ -12,6 +12,8 @@
 #
 #  Press  Ctrl-\ to quit
 #
+#  The output of track names can be turned off by using export DISPLAY_TRACK_INFO=false
+#
 # Known problems:
 #	* 'q' interrupts only playback of current file; press and *hold* ctrl-C
 #	* even if you skip file immediately with Enter or 'q', it gets scrobbled - see below
@@ -27,26 +29,31 @@ kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/nul
 player=${LASTFM_PLAYER:=mplayer}
 taginfo=${TAGINFO:=taginfo}
 scrobbler=${LASTFM_SUBMIT:=lastfmsubmit}
+scrobbler_echo=${SCROBBLER_ECHO:=true}
+display=${DISPLAY_TRACK_INFO:=true}
 
 function scrobble () {
+	read title;	
 	read album;
 	read artist;
-	read title;
 	read time;	
 	
 	[ "$album" = "1" ] && album=""
-	echo "### $scrobbler -e utf8 -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
+	if $scrobbler_echo; then 
+		echo "### $scrobbler -e utf8 -l \"$time\" -a \"$artist\" -b \"$album\" --title \"$title\""
+	fi
 	$scrobbler -e utf8 -l "$time" -a "$artist" -b "$album" --title "$title"
 }
 
 # Allows quiting 
 trap "exit"  HUP PIPE KILL QUIT TERM EXIT
 for f; do
+	if $display; then $taginfo --info "$f"; fi
 	$player "$f" || continue
 
 	case "$f" in
 	*.mp3 | *.m4a | *.flac | *.ogg )
-		$taginfo -short "$f" \
+		$taginfo --short "$f" \
 		|  scrobble
 		;;
 	esac
