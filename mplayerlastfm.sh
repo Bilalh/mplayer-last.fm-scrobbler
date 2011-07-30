@@ -23,7 +23,9 @@
 # in mplayer - it will skip to the next track without scrobbling.
 #
 
-kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/null || lastfmsubmitd
+# Uncomment this line (and comment the next) if you want lastfmsubmitd to die when the program quits
+# kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/null || lastfmsubmitd
+kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/null || lastfmsubmitd &
 
 #Set defaults
 player=${LASTFM_PLAYER:=mplayer}
@@ -46,7 +48,7 @@ function scrobble () {
 }
 
 # Allows quiting 
-trap "exit"  HUP PIPE KILL QUIT TERM EXIT
+trap "exit" HUP PIPE KILL QUIT TERM EXIT
 for f; do
 	if $display; then $taginfo --info "$f"; fi
 	$player "$f" || continue
