@@ -50,12 +50,12 @@ function scrobble () {
 # Allows quiting 
 trap "exit" HUP PIPE KILL QUIT TERM EXIT
 for f; do
-	if $display; then $taginfo --info "$f"; fi
+	if $display; then $taginfo --info 2>/dev/null "$f"; fi
 	$player "$f" || continue
 
 	case "$f" in
 	*.mp3 | *.m4a | *.flac | *.ogg )
-		$taginfo --short "$f" \
+		$taginfo --short  2>/dev/null  "$f" \
 		|  scrobble
 		;;
 	esac

@@ -1,7 +1,7 @@
 // Prints the tag of a audio file 
 // mp3 m4a ogg and flac supported
 
-// Bilal
+// Bilal Hussain
 
 // install:
 //  g++ `taglib-config  --cflags --libs`  taginfo.cpp  -o taginfo
