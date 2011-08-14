@@ -16,4 +16,4 @@ Install this script in your $PATH e.g '/usr/local/bin/m' for easy use
 
 Issues
 ------
-* q' interrupts only playback of current file; press and *hold* ctrl-C even if you skip file immediately with Enter or 'q', it gets scrobbled
+* q' interrupts only playback of current file; press and *hold* ctrl-C to skip. Even if you skip file immediately with Enter or 'q' it will scrobble
