@@ -28,7 +28,7 @@
 kill `ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}'` &>/dev/null || lastfmsubmitd &
 
 #Set defaults
-player=${LASTFM_PLAYER:=mplayer}
+player=${LASTFM_PLAYER:=mplayer -really-quiet}
 taginfo=${TAGINFO:=taginfo}
 scrobbler=${LASTFM_SUBMIT:=lastfmsubmit}
 scrobbler_echo=${SCROBBLER_ECHO:=true}
