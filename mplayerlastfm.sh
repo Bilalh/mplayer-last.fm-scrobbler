@@ -51,7 +51,7 @@ function scrobble () {
 trap "exit" HUP PIPE KILL QUIT TERM EXIT
 for f; do
 	if $display; then $taginfo --info 2>/dev/null "$f"; fi
-	$player "$f" || continue
+	$player "$f" &>/dev/null || continue
 
 	case "$f" in
 	*.mp3 | *.m4a | *.flac | *.ogg )
