@@ -56,6 +56,10 @@ Issues
 * q' interrupts only playback of current file; press and *hold* ctrl-C to skip.  
  Even if you skip file immediately with Enter or 'q' it will scrobble
 
+Deamon
+------
+* There is also a  version that works like a `deamon` in the  `Deamon` directory, has a lot more prerequisites but is more efficient and less tested.  
+
 Licence
 -------
 [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/ "Full details")
