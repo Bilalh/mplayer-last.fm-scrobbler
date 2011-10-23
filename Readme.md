@@ -58,7 +58,8 @@ Issues
 
 Deamon
 ------
-* There is also a  version that works like a `deamon` in the  `Deamon` directory, has a lot more prerequisites but is more efficient and less tested.  
+* There is also a  version that works like a `deamon` in the  `Deamon` directory, has a lot more prerequisites but is more efficient and less tested. 
+* Allows going to the previous track.
 
 Licence
 -------

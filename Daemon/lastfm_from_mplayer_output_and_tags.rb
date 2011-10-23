@@ -8,9 +8,9 @@ METADATA_FILE = "/Users/bilalh/Movies/.Movie/OpeningP/_metadata.yaml"
 output        = $stderr
 
 scrobbler_echo = ENV['SCROBBLER_ECHO']    || true
-use_taginfo    = ENV['USE_TAGINFO']       || false
+use_taginfo    = ENV['USE_TAGINFO']       || true
 scrobbler_echo = false if !scrobbler_echo || scrobbler_echo == 'false'
-# use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
+use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
 
 
 display = ENV['DISPLAY']    || true

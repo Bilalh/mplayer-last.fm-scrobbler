@@ -13,6 +13,7 @@ Prerequisites
 * Install [taglib](http://developer.kde.org/~wheeler/taglib.html "http://developer.kde.org/~wheeler/taglib.html") 
 * mplayer
 * ruby 1.9
+* escape gem
 
 Install 
 -------
@@ -23,6 +24,12 @@ Install
 Options
 -------
 By editing the C file `#defines` and the ruby file's vars
+
+See
+---
+* [mplayer.sh](https://github.com/Bilalh/Bash-Scripts/blob/master/mplayer.sh, "mplayer.sh") contains function for controlling MPlayer and playing media files.
+* [mplayer setting](https://github.com/Bilalh/MPlayer-Settings) for the setting used in the above link.
+
 
 Issues
 ------
