@@ -13,7 +13,7 @@ scrobbler_echo = false if !scrobbler_echo || scrobbler_echo == 'false'
 use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
 
 
-display = ENV['DISPLAY']    || true
+display = ENV['DISPLAY_TRACK_INFO']    || true
 display = false if !display || display == 'false'
 
 `echo "get_property path" >>  ~/.mplayer/pipe`
