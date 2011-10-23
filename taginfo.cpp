@@ -10,12 +10,11 @@
 // if no taglib-config
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <tag.h>
 #include <fileref.h>
-#include <string.h>
-
-using namespace std;
 
 void usage() {
 	fprintf(stderr, "taginfo \n");
@@ -41,7 +40,7 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 
-	if (argc == 3  && strcmp("--info", argv[1]) == 0){
+	else if (argc == 3  && strcmp("--info", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
 		
 		printf("%s - %02d %s - %s\n", 
@@ -49,6 +48,21 @@ int main(int argc, char *argv[]) {
 			f.tag()->track(),
 			f.tag()->title().toCString(true),
 			f.tag()->album().toCString(true)
+		);
+		exit(0);
+	}
+	
+	else if (argc == 4  && strcmp("--details", argv[1]) == 0){
+		TagLib::FileRef f(argv[2]);
+		long start_time = strtol(argv[3],NULL,10);
+		const int end_time = f.audioProperties()->length();
+		printf("%s - %02d %s - %s -  %ld:%02ld/%d:%02d\n", 
+			f.tag()->artist().toCString(true),
+			f.tag()->track(),
+			f.tag()->title().toCString(true),
+			f.tag()->album().toCString(true),
+			(start_time%3600/60), (start_time%60),
+			(end_time%3600/60),   (end_time%60)
 		);
 		exit(0);
 	}

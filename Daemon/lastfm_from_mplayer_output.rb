@@ -25,7 +25,7 @@ if use_taginfo then
 	arr = `taginfo --short #{Escape.shell_command [filepath] } 2>/dev/null`.split(/\n/)
 	exit if arr.length == 0
 	m = {title:arr[0], album:arr[1], artist:arr[2]}
-	output.puts `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null` if display
+	output.puts(`taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 else
 	filepath = File.basename filepath
 	metadata = YAML::load( File.open(METADATA_FILE)) || (puts "no metadata file"; exit)
