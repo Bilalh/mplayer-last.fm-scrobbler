@@ -6,6 +6,7 @@ A deamon that scrobbles the current playing track on reaching 50%.
 Usage
 -----
 `last_fm_scrobble_on_mplayer_played_50 &` 
+`last_fm_scrobble_on_mplayer_played_50_with_info &` 
 
 Prerequisites
 -------------
@@ -17,9 +18,11 @@ Prerequisites
 
 Install 
 -------
+* Set the path to your MPlayer FIFO in the files
+	* a FIFO can be made by doing `mkfifo ~/.mplayer/pipe`
 * run `make`
 * run `make install`
-* make sure that `/usr/local/bin` is in your path
+* make sure that `/usr/local/bin` is in your `$PATH`
 
 Options
 -------
