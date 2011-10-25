@@ -21,25 +21,24 @@ sleep 0.1
 filepath_with_name = `tail -n1 ~/.mplayer/output`
 filepath = filepath_with_name[/.*?=(.*)/,1]
 m = {} 
+
 if use_taginfo then
-	arr = `taginfo --short #{Escape.shell_command [filepath] }`.split(/\n/)
+	arr = `taginfo --short #{Escape.shell_command [filepath] } 2>/dev/null`.split(/\n/)
 	exit if arr.length == 0
-	m = {title:arr[0], album:arr[1], artist:arr[2]}
+	m = {title:arr[0], album:arr[1], artist:arr[2], length:arr[3]}
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 else
 	filepath = File.basename filepath
 	metadata = YAML::load( File.open(METADATA_FILE)) || (puts "no metadata file"; exit)
 	m = metadata[File.basename filepath] || (puts "no metadata for '#{File.basename filepath}'"; exit)
+	
+	# m[:length] = `mediaInfo --Inform='Video;%Duration/String3%' "#{File.basename filepath}" | sed "s/\.[0-9][0-9]*$//"` 
+	m[:length] = "1:30" # fake length because of flv
 	output.puts "# #{m[:artist]} - #{m[:title]} - #{m[:album]}" if display
 end
 
-# length = `mediaInfo --Inform='Video;%Duration/String3%' "#{File.basename filepath}" | sed "s/\.[0-9][0-9]*$//"`
-# length.strip!
-length = "1:30" # fake length because of flv
 
-output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{length}"} if scrobbler_echo
+output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"} if scrobbler_echo
 # scrobbles the track
 puts `kill $(ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}') &>/dev/null;\ 
 #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{length}"; lastfmsubmitd&`
-
-

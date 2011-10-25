@@ -41,6 +41,10 @@ int main (int argc, char const *argv[]) {
 			c++;
 		}
 		
+		if (pos < 3){
+			system(INFO);
+		}
+		
 		// scrobble to lastfm.
 		if (!current_done && pos >= 50) {
 			system(SCRIPT);
@@ -51,10 +55,6 @@ int main (int argc, char const *argv[]) {
 			current_done = false;
 		}
 		
-		if (pos < 3){
-			system(INFO);
-		}
-
 		
 		sleep(5);
 	}

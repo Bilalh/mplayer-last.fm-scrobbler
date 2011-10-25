@@ -13,7 +13,7 @@ while true
 	pos = pos_with_equals[/.*=(\d+)/,1].to_i
 	
 	if !current_done && pos >= 50 then
-		`~/Scripts/lastfm_from_mplayer_output.rb`
+		`/usr/local/bin/lastfm_from_mplayer_output.rb`
 		current_done = true
 	end
 			
