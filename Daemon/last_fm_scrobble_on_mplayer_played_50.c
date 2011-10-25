@@ -51,11 +51,6 @@ int main (int argc, char const *argv[]) {
 			current_done = false;
 		}
 		
-		if (pos < 4){
-			system(INFO);
-		}
-
-		
 		sleep(5);
 	}
 	return 0;

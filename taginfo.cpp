@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 		exit(0);
 	}
 	
-	else if (argc == 4  && strcmp("--details", argv[1]) == 0){
+	else if (argc == 4  && strcmp("--details-colour", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
 		long start_time = strtol(argv[3],NULL,10);
 		const int end_time = f.audioProperties()->length();
