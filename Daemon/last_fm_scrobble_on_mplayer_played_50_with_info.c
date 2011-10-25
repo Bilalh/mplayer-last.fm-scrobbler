@@ -51,7 +51,7 @@ int main (int argc, char const *argv[]) {
 			current_done = false;
 		}
 		
-		if (pos < 4){
+		if (pos < 3){
 			system(INFO);
 		}
 
