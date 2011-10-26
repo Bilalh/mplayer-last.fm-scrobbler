@@ -14,4 +14,4 @@ time_with_name = `tail -n1 ~/.mplayer/output`
 time = time_with_name[/.*?=(.*)/,1]
 time = time.to_f.round
 
-output.puts('# ' + `taginfo --details #{Escape.shell_command [filepath]} #{time}  2>/dev/null`)
+output.puts('# ' + `taginfo --details-colour #{Escape.shell_command [filepath]} #{time}  2>/dev/null`)
