@@ -40,7 +40,11 @@ end
 
 output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"} if scrobbler_echo
 # scrobbles the track
+
+artist, album, title = Escape.shell_single_word(m[:artist]),  Escape.shell_single_word(m[:album]),  (Escape.shell_single_word m[:title])
+# puts "# #{artist}, #{album}, #{title}"
+
 puts `kill $(ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}') &>/dev/null;\ 
-#{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"; lastfmsubmitd&`
+#{LASTFM_SUBMIT} -e utf8 -a #{artist} -b #{album} --title #{title} -l "#{m[:length]}"; lastfmsubmitd&`
 
 

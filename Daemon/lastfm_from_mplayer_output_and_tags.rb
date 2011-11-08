@@ -21,7 +21,7 @@ sleep 0.1
 filepath_with_name = `tail -n1 ~/.mplayer/output`
 filepath = filepath_with_name[/.*?=(.*)/,1]
 m = {} 
-
+``
 if use_taginfo then
 	arr = `taginfo --short #{Escape.shell_command [filepath] } 2>/dev/null`.split(/\n/)
 	exit if arr.length == 0
@@ -37,8 +37,11 @@ else
 	output.puts "# #{m[:artist]} - #{m[:title]} - #{m[:album]}" if display
 end
 
+artist, album, title = Escape.shell_single_word(m[:artist]),  Escape.shell_single_word(m[:album]),  (Escape.shell_single_word m[:title])
+# puts "# #{artist}, #{album}, #{title}"
 
 output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"} if scrobbler_echo
 # scrobbles the track
+
 puts `kill $(ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}') &>/dev/null;\ 
-#{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"; lastfmsubmitd&`
+#{LASTFM_SUBMIT} -e utf8 -a #{artist} -b #{album} --title #{title} -l "#{m[:length]}"; lastfmsubmitd&`
