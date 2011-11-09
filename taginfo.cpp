@@ -21,9 +21,22 @@ void usage() {
 	fprintf(stderr, "Usage: taginfo <file(s)>\n");
 	fprintf(stderr, "Usage: taginfo --short   <file>\n");
 	fprintf(stderr, "Usage: taginfo --info    <file>\n");
+	fprintf(stderr, "Usage: taginfo --pretty  <file> \n");
+	fprintf(stderr, "Usage: taginfo --pretty  <file> <current_secs>\n");
 	fprintf(stderr, "Usage: taginfo --details <file> <current_secs>\n");
 	fprintf(stderr, "Usage: taginfo --details-colour <file> <current_secs>\n");	
 }
+
+// adds %s before and after
+#define SSS(str) "%s" str "%s"
+#define S3 "%s%s%s"
+#define BLUE         "\033[34m"             // Blue 
+#define RED          "\033[31m"             // Red 
+#define GREEN        "\033[32m"             // Green 
+#define RESET        "\033[0m"              // Need before and after 
+#define COLOUR(string, colour)  RESET colour, string, RESET
+#define COLOURN(string, colour) string
+
 
 int main(int argc, char *argv[]) {
 	if(argc < 2) {
@@ -74,16 +87,7 @@ int main(int argc, char *argv[]) {
 		TagLib::FileRef f(argv[2]);
 		long start_time = strtol(argv[3],NULL,10);
 		const int end_time = f.audioProperties()->length();
-		
-		// adds %s before and after
-		#define SSS(str) "%s" str "%s"
-		#define BLUE         "\033[34m"             // Blue 
-		#define RED          "\033[31m"             // Red 
-		#define GREEN        "\033[32m"             // Green 
-		#define RESET        "\033[0m"              // Need before and after 
-		#define COLOUR(string, colour) RESET colour, string, RESET
-		
-		
+				
 		printf("%s - %02d " SSS("%s") " - %s -  %ld:%02ld/%d:%02d\n", 
 			f.tag()->artist().toCString(true),
 			f.tag()->track(),
@@ -94,6 +98,59 @@ int main(int argc, char *argv[]) {
 		);
 		exit(0);
 	}
+	
+	else if (argc == 4  && strcmp("--pretty", argv[1]) == 0){
+		TagLib::FileRef f(argv[2]);
+		long start_time = strtol(argv[3],NULL,10);
+		const int end_time = f.audioProperties()->length();
+		
+		
+	 // Track : Faraway ★★★★★
+	 // Album : Day After Tomorrow
+	 // Artist: Day After Tomorrow
+	 // Time  : 5:00/5:84
+		
+		printf(
+			"Track  : %d - " S3 "\n"
+			"Album  : %s\n"
+			"Artist : %s\n"
+			"Time   : %ld:%02ld/%d:%02d\n",
+			
+			f.tag()->track(), COLOUR(f.tag()->title().toCString(true),BLUE),
+			f.tag()->artist().toCString(true),
+			f.tag()->album().toCString(true),
+			
+			(start_time%3600/60), (start_time%60), (end_time%3600/60), (end_time%60)
+		);
+		
+		exit(0);
+	}
+
+	else if (argc == 3  && strcmp("--pretty", argv[1]) == 0){
+		TagLib::FileRef f(argv[2]);
+		const int end_time = f.audioProperties()->length();
+		
+		
+	 // Track : Faraway ★★★★★
+	 // Album : Day After Tomorrow
+	 // Artist: Day After Tomorrow
+	 // Time  : 5:00/5:84
+		
+		printf(
+			"Track  : %d - " S3 "\n"
+			"Album  : %s\n"
+			"Artist : %s\n"
+			"Time   : %d:%02d\n",
+			
+			f.tag()->track(), COLOUR(f.tag()->title().toCString(true),BLUE),
+			f.tag()->artist().toCString(true),
+			f.tag()->album().toCString(true),
+			(end_time%3600/60), (end_time%60)
+		);
+		
+		exit(0);
+	}
+	
 
 	for(int i = 1; i < argc; i++) {
 		TagLib::FileRef f(argv[i]);
