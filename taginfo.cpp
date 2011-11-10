@@ -33,7 +33,7 @@ void usage() {
 #define BLUE         "\033[34m"             // Blue 
 #define RED          "\033[31m"             // Red 
 #define GREEN        "\033[32m"             // Green 
-#define RESET        "\033[0m"              // Need before and after 
+#define RESET        "\033[0m"              // Needed before and after colours
 #define COLOUR(string, colour)  RESET colour, string, RESET
 #define COLOURN(string, colour) string
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
 	if (argc == 3  && strcmp("--short", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
-		
+		if (f.isNull()) exit(1);
 		printf("%s\n", f.tag()->title().toCString(true));
 		printf("%s\n", f.tag()->album().toCString(true));
 		printf("%s\n", f.tag()->artist().toCString(true));
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 
 	else if (argc == 3  && strcmp("--info", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
-		
+		if (f.isNull()) exit(1);
 		printf("%s - %02d %s - %s\n", 
 			f.tag()->artist().toCString(true),
 			f.tag()->track(),
@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
 	
 	else if (argc == 4  && strcmp("--details", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
+		if (f.isNull()) exit(1);
 		long start_time = strtol(argv[3],NULL,10);
 		const int end_time = f.audioProperties()->length();
 		
@@ -85,6 +86,7 @@ int main(int argc, char *argv[]) {
 	
 	else if (argc == 4  && strcmp("--details-colour", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
+		if (f.isNull()) exit(1);
 		long start_time = strtol(argv[3],NULL,10);
 		const int end_time = f.audioProperties()->length();
 				
@@ -101,6 +103,7 @@ int main(int argc, char *argv[]) {
 	
 	else if (argc == 4  && strcmp("--pretty", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
+		if (f.isNull()) exit(1);
 		long start_time = strtol(argv[3],NULL,10);
 		const int end_time = f.audioProperties()->length();
 		
@@ -128,6 +131,7 @@ int main(int argc, char *argv[]) {
 
 	else if (argc == 3  && strcmp("--pretty", argv[1]) == 0){
 		TagLib::FileRef f(argv[2]);
+		if (f.isNull()) exit(1);
 		const int end_time = f.audioProperties()->length();
 		
 		
