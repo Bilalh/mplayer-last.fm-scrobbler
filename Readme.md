@@ -18,7 +18,7 @@ Install
 -------
 * run `make.sh` to compile `taginfo` 
 * run `install.sh` (might need sudo) to install `mplayerlastfm.sh` as `/usr/local/bin/mplayerlastfm` and `play_directory.sh` as `/usr/local/bin/play_directory.sh`  
-or Install `mplayerlastfm.sh` in your `$PATH` e.g '/usr/local/bin/m' for easy use
+or Install `mplayerlastfm.sh` in your `$PATH` e.g '/usr/local/bin/m' for easy use, also put `taginfo` in your `$PATH`
 
 
 
@@ -35,7 +35,7 @@ Set these variables before running mplayerlastfm.sh to set your preferences.
 play_directory.sh
 -----------------
 Allows the user to choose which directory to play using `mplayerlastfm.sh`. 
-if the directory contains *4* directory album 1 to album 4 then running `play_directory.sh`
+if the directory contains **4** directories, `album 1`, `album 2`, `album 3`, `album 4` then running `play_directory.sh`
 will result in:
 
 	1) Album 1    3) Album 3  
@@ -44,7 +44,7 @@ will result in:
 
 Where the user type the number e.g 3 to pick Album 3.  It play recursively all files in the directory. 
 
-Set these variables before running play_directory.sh to set your preferences.
+Set these variables before running `play_directory.sh` to set your preferences.
 
 	MPLAYER_LASTFM default mplayerlastfm
 	MPN_DIR        defualt $HOME/Music
@@ -58,8 +58,10 @@ Issues
 
 Deamon
 ------
-* There is also a  version that works like a `deamon` in the  `Deamon` directory, has a lot more prerequisites but is more efficient and less tested. 
+* There is also a  version that works like a `deamon` in the  `Deamon` directory, it has a lot more prerequisites but is more efficient and has extra features and is less tested see `Readme.md` in the `Daemon` directory for details. 
 * Allows going to the previous track.
+* Allows saving volume settings.
+* Allow printing of current track info.
 
 Licence
 -------
