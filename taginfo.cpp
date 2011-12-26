@@ -109,10 +109,9 @@ int main(int argc, char *argv[]) {
 		
 		
 	 // Track : Faraway ★★★★★
-	 // Album : Day After Tomorrow
-	 // Artist: Day After Tomorrow
+	 // Album : Album
+	 // Artist: Artist
 	 // Time  : 5:00/5:84
-		
 		printf(
 			"Track  : %d - " S3 "\n"
 			"Album  : %s\n"
@@ -136,10 +135,9 @@ int main(int argc, char *argv[]) {
 		
 		
 	 // Track : Faraway ★★★★★
-	 // Album : Day After Tomorrow
-	 // Artist: Day After Tomorrow
-	 // Time  : 5:00/5:84
-		
+	 // Album : Album
+	 // Artist: Artist
+	 // Time  : 5:00
 		printf(
 			"Track  : %d - " S3 "\n"
 			"Album  : %s\n"
