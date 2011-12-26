@@ -17,7 +17,7 @@
 #include <fileref.h>
 
 void usage() {
-	fprintf(stderr, "tagformat <files> \n");
+	fprintf(stderr, "tagformat [--notime] <files> \n");
 }
 
 int main(int argc, char *argv[]) {
@@ -25,20 +25,26 @@ int main(int argc, char *argv[]) {
 		usage();
 		exit(1);
 	}
-	                        
-	for(int i = 1; i < argc; i++) {
-		
+	int start = 1; bool showTimes = true;
+	if (strcmp(argv[1], "--notime" ) == 0 || strcmp(argv[1], "-n" ) ==0 ){
+		showTimes = false;
+	}
+	
+	for(int i = start; i < argc; i++) {
 		TagLib::FileRef f(argv[i]);
 		if (f.isNull()){
 			fprintf(stderr, "Error opening file: %s\n", argv[i]);
 			continue;
 		}
+		
 		const int end_time = f.audioProperties()->length();
-		printf("%02d %s %d:%02d\n",
-			   f.tag()->track(),
-			   f.tag()->title().toCString(true),
-			   (end_time % 3600 / 60),   (end_time % 60)
+		printf("%02d %s",
+				f.tag()->track(),
+				f.tag()->title().toCString(true)
 			  );
+			
+		if (showTimes) printf(" %d:%02d\n", (end_time % 3600 / 60), (end_time % 60));
+		else           puts("");
 	 }
 	return 0;
 }
