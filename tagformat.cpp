@@ -17,7 +17,7 @@
 #include <fileref.h>
 
 void usage() {
-	fprintf(stderr, "tagformat [--notime] <files> \n");
+	fprintf(stderr, "tagformat [--notime] [--nonames] <files> \n");
 }
 
 int main(int argc, char *argv[]) {
@@ -25,9 +25,13 @@ int main(int argc, char *argv[]) {
 		usage();
 		exit(1);
 	}
-	int start = 1; bool showTimes = true;
-	if (strcmp(argv[1], "--notime" ) == 0 || strcmp(argv[1], "-n" ) ==0 ){
+	int start = 1; bool showTimes = true, showNames=true;
+	if (strcmp(argv[1], "--notime" ) == 0 || strcmp(argv[1], "-t" ) ==0 ){
 		showTimes = false;
+		start = 2;
+	}else if (strcmp(argv[1], "--nonames" ) == 0 || strcmp(argv[1], "-n" ) ==0 ){
+		showNames = false;
+		start = 2;
 	}
 	
 	for(int i = start; i < argc; i++) {
@@ -37,14 +41,19 @@ int main(int argc, char *argv[]) {
 			continue;
 		}
 		
-		const int end_time = f.audioProperties()->length();
-		printf("%02d %s",
-				f.tag()->track(),
-				f.tag()->title().toCString(true)
-			  );
-			
-		if (showTimes) printf(" %d:%02d\n", (end_time % 3600 / 60), (end_time % 60));
-		else           puts("");
+		if(showNames){
+			printf("%02d %s",
+					f.tag()->track(),
+					f.tag()->title().toCString(true)
+				  );			
+		}
+		
+		if (showTimes) {
+			const int end_time = f.audioProperties()->length();			
+			printf(" %d:%02d", (end_time % 3600 / 60), (end_time % 60));
+		}
+		
+		puts("");
 	 }
 	return 0;
 }
