@@ -6,6 +6,7 @@ A deamon that scrobbles the current playing track on reaching 50%.
 Usage
 -----
 `last_fm_scrobble_on_mplayer_played_50 &` 
+
 `last_fm_scrobble_on_mplayer_played_50_with_info &` 
 
 Prerequisites
@@ -15,11 +16,13 @@ Prerequisites
 * mplayer
 * ruby 1.9
 * escape gem
+* [taginfo](https://github.com/Bilalh/mplayer-last.fm-scrobbler/)
 
 Install 
 -------
-* Set the path to your MPlayer FIFO in the files
-	* a FIFO can be made by doing `mkfifo ~/.mplayer/pipe`
+* Makes sure taginfo is in your `$PATH`
+* Make a FIFO which can be made by doing `mkfifo ~/.mplayer/pipe`
+	* Set the path to your MPlayer FIFO in the source files if not using the above path
 * run `make`
 * run `make install`
 * make sure that `/usr/local/bin` is in your `$PATH`
