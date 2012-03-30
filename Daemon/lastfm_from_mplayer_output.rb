@@ -24,17 +24,17 @@ m = {}
 
 if use_taginfo then
 	arr = `taginfo --short #{Escape.shell_command [filepath] } 2>/dev/null`.split(/\n/)
-	(exit; "No Tag Info for #{filepath}" ) if arr.length == 0
+	(output.puts "# No Tag Info for #{filepath}";exit ) if arr.length == 0
 	m = {title:arr[0], album:arr[1], artist:arr[2], length:arr[3]}
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 else
-	filepath = File.basename filepath
-	metadata = YAML::load( File.open(METADATA_FILE)) || (puts "no metadata file"; exit)
-	m = metadata[File.basename filepath] || (puts "no metadata for '#{File.basename filepath}'"; exit)
+	filename = File.basename filepath
+	metadata = YAML::load( File.open(METADATA_FILE)) || (output.puts "no metadata file"; exit)
+	m = metadata[File.basename filename] || (puts "# no metadata for '#{filename}'"; exit)
 	
-	m[:length] = `mediaInfo --Inform='Video;%Duration/String3%' "#{File.basename filepath}" | sed "s/\.[0-9][0-9]*$//"`.strip
+	m[:length] = `mediaInfo --Inform='Video;%Duration/String3%' #{Escape.shell_command [filepath]} | sed "s/\.[0-9][0-9]*$//"`.strip
 	
-	m[:length] = "1:30" unless m[:length].length > 0
+	(m[:length] = "1:30") unless m[:length].length > 0
 	output.puts "# #{m[:artist]} - #{m[:title]} - #{m[:album]}" if display
 end
 
@@ -45,7 +45,7 @@ output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --
 artist, album, title = Escape.shell_single_word(m[:artist]),  Escape.shell_single_word(m[:album]),  (Escape.shell_single_word m[:title])
 # puts "# #{artist}, #{album}, #{title}"
 
-puts `kill $(ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}') &>/dev/null;\ 
+output.puts `kill $(ps aux | grep lastfmsubmitd | grep -v grep  | awk '{print $2}') &>/dev/null;\ 
 #{LASTFM_SUBMIT} -e utf8 -a #{artist} -b #{album} --title #{title} -l "#{m[:length]}"; lastfmsubmitd&`
 
 

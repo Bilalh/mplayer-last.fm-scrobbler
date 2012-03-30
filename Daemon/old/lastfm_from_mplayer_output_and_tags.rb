@@ -21,10 +21,10 @@ sleep 0.1
 filepath_with_name = `tail -n1 ~/.mplayer/output`
 filepath = filepath_with_name[/.*?=(.*)/,1]
 m = {} 
-``
+
 if use_taginfo then
 	arr = `taginfo --short #{Escape.shell_command [filepath] } 2>/dev/null`.split(/\n/)
-	exit if arr.length == 0
+	(exit; "No Tag Info for #{filepath}" ) if arr.length == 0
 	m = {title:arr[0], album:arr[1], artist:arr[2], length:arr[3]}
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 else
