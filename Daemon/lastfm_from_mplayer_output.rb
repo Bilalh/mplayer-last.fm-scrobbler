@@ -3,18 +3,21 @@ require "yaml"
 require "pp"
 require 'escape'
 
-LASTFM_SUBMIT = '/usr/local/bin/lastfmsubmit'
-METADATA_FILE = "/Users/bilalh/Movies/.Movie/OpeningP/_metadata.yaml"
-output        = $stderr
+LASTFM_SUBMIT  = '/usr/local/bin/lastfmsubmit'
+METADATA_FILE  = "/Users/bilalh/Movies/.Movie/OpeningP/_metadata.yaml"
+PLAYCOUNT_FILE = "/Users/bilalh/Music/playcount.yaml" 
+output         = $stderr
 
 scrobbler_echo = ENV['SCROBBLER_ECHO']    || true
 use_taginfo    = ENV['USE_TAGINFO']       || false
 scrobbler_echo = false if !scrobbler_echo || scrobbler_echo == 'false'
 # use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
 
+use_increment  = ENV['USE_INCREMENT']     || false
 
-display = ENV['DISPLAY_TRACK_INFO']    || true
+display = ENV['DISPLAY_TRACK_INFO']       || true
 display = false if !display || display == 'false'
+
 
 `echo "get_property path" >>  ~/.mplayer/pipe`
 sleep 0.1
@@ -27,6 +30,26 @@ if use_taginfo then
 	(output.puts "# No Tag Info for #{filepath}";exit ) if arr.length == 0
 	m = {title:arr[0], album:arr[1], artist:arr[2], length:arr[3]}
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
+	
+	if use_increment then
+		
+		
+		counts = 
+		if File.exists? PLAYCOUNT_FILE then
+			 YAML::load  File.open PLAYCOUNT_FILE
+		else
+			 {}
+		end
+		i  = counts[filepath] || 0
+		i += 1
+		counts[filepath] = i
+		
+		File.open(PLAYCOUNT_FILE, 'w') do |f|
+			f.write counts.to_yaml
+		end
+		
+	end
+	
 else
 	filename = File.basename filepath
 	metadata = YAML::load( File.open(METADATA_FILE)) || (output.puts "no metadata file"; exit)
