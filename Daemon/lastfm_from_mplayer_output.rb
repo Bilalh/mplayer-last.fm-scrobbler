@@ -34,7 +34,7 @@ else
 	
 	m[:length] = `mediaInfo --Inform='Video;%Duration/String3%' "#{File.basename filepath}" | sed "s/\.[0-9][0-9]*$//"`.strip
 	
-	m[:length] = "1:30" unless m[:length].length >0
+	m[:length] = "1:30" unless m[:length].length > 0
 	output.puts "# #{m[:artist]} - #{m[:title]} - #{m[:album]}" if display
 end
 
