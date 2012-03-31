@@ -31,6 +31,10 @@ Options
 -------
 By editing the C file `#defines` and the ruby file's vars
 
+Keep track of play count
+------------------------
+By doing `export USE_INCREMENT=true`, the scripts will keep track of play counts. Use `update_itunes_playcounts.rb` to add to iTunes's plays counts.
+
 See
 ---
 * [mplayer.sh](https://github.com/Bilalh/Bash-Scripts/blob/master/mplayer.sh, "mplayer.sh") contains function for controlling MPlayer and playing media files.

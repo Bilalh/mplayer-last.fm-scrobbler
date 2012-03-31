@@ -5,18 +5,22 @@ require 'escape'
 
 LASTFM_SUBMIT  = '/usr/local/bin/lastfmsubmit'
 METADATA_FILE  = "/Users/bilalh/Movies/.Movie/OpeningP/_metadata.yaml"
-PLAYCOUNT_FILE = "/Users/bilalh/Music/playcount.yaml" 
 output         = $stderr
 
-scrobbler_echo = ENV['SCROBBLER_ECHO']    || true
-use_taginfo    = ENV['USE_TAGINFO']       || false
-scrobbler_echo = false if !scrobbler_echo || scrobbler_echo == 'false'
-# use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
 
-use_increment  = ENV['USE_INCREMENT']     || false
+scrobbler_echo = ENV['SCROBBLER_ECHO']    || true
+use_taginfo    = ENV['USE_TAGINFO']       || true
+
+scrobbler_echo = false if !scrobbler_echo || scrobbler_echo == 'false'
+use_taginfo    = false if !use_taginfo    || use_taginfo    == 'false'
+
+use_increment  = ENV['USE_INCREMENT']      || false
+use_increment  = false if !use_increment   || use_increment == 'false'
 
 display = ENV['DISPLAY_TRACK_INFO']       || true
 display = false if !display || display == 'false'
+
+playcount_file = ENV['PLAYCOUNT_FILE'] || File.expand_path("~/Music/playcount.yaml")
 
 
 `echo "get_property path" >>  ~/.mplayer/pipe`
@@ -32,11 +36,9 @@ if use_taginfo then
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 	
 	if use_increment then
-		
-		
 		counts = 
-		if File.exists? PLAYCOUNT_FILE then
-			 YAML::load  File.open PLAYCOUNT_FILE
+		if File.exists? playcount_file then
+			 YAML::load  File.open playcount_file
 		else
 			 {}
 		end
@@ -44,7 +46,7 @@ if use_taginfo then
 		i += 1
 		counts[filepath] = i
 		
-		File.open(PLAYCOUNT_FILE, 'w') do |f|
+		File.open(playcount_file, 'w') do |f|
 			f.write counts.to_yaml
 		end
 		
