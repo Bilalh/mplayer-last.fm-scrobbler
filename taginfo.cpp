@@ -15,6 +15,14 @@
 
 #include <tag.h>
 #include <fileref.h>
+#include <string>
+
+#include <mp4tag.h> 
+#include <mp4file.h>
+
+#include <mpegfile.h>
+#include <id3v2tag.h> 
+#include <id3v2frame.h>
 
 void usage() {
 	fprintf(stderr, "taginfo \n");
@@ -25,6 +33,7 @@ void usage() {
 	fprintf(stderr, "Usage: taginfo --pretty  <file> <current_secs>\n");
 	fprintf(stderr, "Usage: taginfo --details <file> <current_secs>\n");
 	fprintf(stderr, "Usage: taginfo --details-colour <file> <current_secs>\n");	
+	fprintf(stderr, "Usage: taginfo --short2  <mp3|m4a>\n");
 }
 
 // adds %s before and after
@@ -36,6 +45,16 @@ void usage() {
 #define RESET        "\033[0m"              // Needed before and after colours
 #define COLOUR(string, colour)  RESET colour, string, RESET
 #define COLOURN(string, colour) string
+
+
+bool endsWith (std::string const &fullString, std::string const &ending)
+{
+    if (fullString.length() >= ending.length()) {
+        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+    } else {
+        return false;
+    }
+}
 
 
 int main(int argc, char *argv[]) {
@@ -52,6 +71,48 @@ int main(int argc, char *argv[]) {
 		printf("%s\n", f.tag()->artist().toCString(true));
 		int time = f.audioProperties()->length();
 		printf("%d:%d\n", (time%3600/60), (time%60) );
+		exit(0);
+	}
+
+	// --short with disk number
+	else if (argc == 3  && strcmp("--short2", argv[1]) == 0){
+		TagLib::FileRef f(argv[2]);
+		if (f.isNull()) exit(1);
+		printf("%s\n", f.tag()->title().toCString(true));
+		printf("%s\n", f.tag()->album().toCString(true));
+		printf("%s\n", f.tag()->artist().toCString(true));
+		int time = f.audioProperties()->length();
+		printf("%d:%d\n", (time%3600/60), (time%60) );
+		printf("%d\n", f.tag()->track());
+		
+		int disc_number = -1;
+		std::string path(argv[2]);
+		if (endsWith(path,".m4a") || endsWith(path,".mp4")){
+		    // MPEG::File m4a
+			TagLib::MP4::File mp4(argv[2]);
+			TagLib::MP4::Tag * const t = mp4.tag();
+			const TagLib::MP4::ItemListMap &map =  t->itemListMap();
+			if (!map.contains("disk")){
+				fprintf(stderr, "%s has no disk number\n", argv[2]);	
+				exit(1);
+			}
+			const TagLib::MP4::Item::IntPair discs  =  map["disk"].toIntPair();
+			disc_number = discs.first;
+		}else if (endsWith(path,".mp3")){
+			TagLib::MPEG::File mp3(argv[2]);
+			const TagLib::ID3v2::Tag *tag =mp3.ID3v2Tag();
+			TagLib::ID3v2::FrameList l = tag->frameList("TPOS");
+			TagLib::String temp = l.front()->toString();
+			disc_number = temp.toInt();
+			if (disc_number==0){
+				fprintf(stderr, "%s has no disk number\n", argv[2]);	
+				exit(1);
+			}
+		}else{
+			fprintf(stderr, "%s is not mp3/m4a a file\n", argv[2]);	
+			exit(1);
+		}
+		printf("%d\n", disc_number);
 		exit(0);
 	}
 
