@@ -35,23 +35,6 @@ if use_taginfo then
 	m = {title:arr[0], album:arr[1], artist:arr[2], length:arr[3]}
 	output.puts('# ' + `taginfo --info #{Escape.shell_command [filepath]} 2>/dev/null`) if display
 	
-	if use_increment then
-		counts = 
-		if File.exists? playcount_file then
-			 YAML::load  File.open playcount_file
-		else
-			 {}
-		end
-		i  = counts[filepath] || 0
-		i += 1
-		counts[filepath] = i
-		
-		File.open(playcount_file, 'w') do |f|
-			f.write counts.to_yaml
-		end
-		
-	end
-	
 else
 	filename = File.basename filepath
 	metadata = YAML::load( File.open(METADATA_FILE)) || (output.puts "no metadata file"; exit)
@@ -61,8 +44,25 @@ else
 	
 	(m[:length] = "1:30") unless m[:length].length > 0
 	output.puts "# #{m[:artist]} - #{m[:title]} - #{m[:album]}" if display
+	filepath = filename
 end
 
+if use_increment then
+	counts = 
+	if File.exists? playcount_file then
+		 YAML::load  File.open playcount_file
+	else
+		 {}
+	end
+	i  = counts[filepath] || 0
+	i += 1
+	counts[filepath] = i
+	
+	File.open(playcount_file, 'w') do |f|
+		f.write counts.to_yaml
+	end
+	
+end
 
 output.puts %{# #{LASTFM_SUBMIT} -e utf8 -a "#{m[:artist]}" -b "#{m[:album]}" --title "#{m[:title]}" -l "#{m[:length]}"} if scrobbler_echo
 # scrobbles the track
