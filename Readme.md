@@ -63,6 +63,11 @@ Deamon
 * Allows saving volume settings.
 * Allow printing of current track info.
 
+
+MediaKeys (Mac OSX only)
+------------------------
+See [MediaKeyHelper](https://github.com/Bilalh/MediaKeyHelper) to control MPlayer with the mediakeys (F7, F8, F9) on a mac keyboard.
+
 Licence
 -------
 [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-nc-sa/3.0/ "Full details")
